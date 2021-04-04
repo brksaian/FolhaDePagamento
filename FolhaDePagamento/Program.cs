@@ -52,16 +52,15 @@ namespace FolhaDePagamento
                         if (leuDados)
                         {
                             Console.WriteLine("\nCadastrado de folha:\n\n");
-                            Console.WriteLine("Insira o cpf do funcionario:");
-                            string cpf = Console.ReadLine();
-                            Funcionario funcionario = ListaFuncionarios.SearchFuncionario(cpf);
+                            string c = TrataString("Insira o cpf do funcionario");
+                            Funcionario funcionario = ListaFuncionarios.SearchFuncionario(c);
                             if (funcionario != null)
                             {
                                 Pagamento F = new Pagamento();
                                 Console.WriteLine("Novo folha:");
                                 F.Mes = TrataNumeroInteiro("Mes");
                                 F.Ano = TrataNumeroInteiro("Ano");
-                                if (ListaDePagamentos.SearchPagamentoCPF(F.Ano, F.Mes, cpf) == null )
+                                if (ListaDePagamentos.SearchPagamentoCPF(F.Ano, F.Mes, c) == null )
                                 {
                                     F.Numero_horas = TrataNumeroInteiro("Numero de horas");
                                     F.Valor = TrataNumeroDouble("Valor da hora");
@@ -81,12 +80,11 @@ namespace FolhaDePagamento
                         break;
                     case 3:
                         Console.Clear();
-                        Console.WriteLine("Insira o cpf do funcionario:");
-                        string c = Console.ReadLine();
-                        if(ListaFuncionarios.SearchFuncionario(c) != null)
+                        string cpf = TrataString("Insira o cpf do funcionario");
+                        if (ListaFuncionarios.SearchFuncionario(cpf) != null)
                         {
-                            int m = TrataNumeroInteiro("Insira o mes");
-                            int a = TrataNumeroInteiro("Insira o ano");
+                            int m = TrataNumeroInteiro("Mes");
+                            int a = TrataNumeroInteiro("Ano");
                             Pagamento p = ListaDePagamentos.SearchPagamento(a, m);
                             if (p != null)
                             {
@@ -110,10 +108,11 @@ namespace FolhaDePagamento
                     case 4:
                         double total = 0.0;
                         Console.Clear();
-                        int mes = TrataNumeroInteiro("Insira o mes");
-                        int ano = TrataNumeroInteiro("Insira o ano");
+                        int mes = TrataNumeroInteiro("Mes");
+                        int ano = TrataNumeroInteiro("Ano");
                         foreach (Pagamento p in ListaDePagamentos.GetPagamento())
                         {
+                            Console.WriteLine();
                             if(p.Ano.Equals(ano) && p.Mes.Equals(mes))
                             {
                                 Console.WriteLine("Nome: " + p.funcionario.Nome);
