@@ -16,21 +16,17 @@ namespace FolhaDePagamento
                 Console.WriteLine("3 – Consultar folha");
                 Console.WriteLine("4 – Listar folhas");
                 Console.WriteLine("5 – Sair");
-                Console.WriteLine("Informe a opção: ");
-                op = int.Parse(Console.ReadLine());
+                op = TrataNumeroInteiro("Informe a opção");
                 Console.Clear();
                 switch (op)
                 {
                     case 1:
                         Funcionario f = new Funcionario();
-                        Console.WriteLine("Novo funcionario:");
-                        Console.WriteLine("CPF:");
-                        f.CPF = Console.ReadLine();
+                        Console.WriteLine("\t\tNovo funcionario");
+                        f.CPF = TrataString("CPF");
                         if(ListaFuncionarios.SearchFuncionario(f.CPF) == null)
                         {
-
-                            Console.WriteLine("Nome:");
-                            f.Nome = Console.ReadLine();
+                            f.Nome = TrataString("Nome");
                             try
                             {
                                 ListaFuncionarios.AddFuncionario(f);
@@ -63,16 +59,12 @@ namespace FolhaDePagamento
                             {
                                 Pagamento F = new Pagamento();
                                 Console.WriteLine("Novo folha:");
-                                Console.WriteLine("Mes:");
-                                F.Mes = int.Parse(Console.ReadLine());
-                                Console.WriteLine("Ano:");
-                                F.Ano = int.Parse(Console.ReadLine());
+                                F.Mes = TrataNumeroInteiro("Mes");
+                                F.Ano = TrataNumeroInteiro("Ano");
                                 if (ListaDePagamentos.SearchPagamentoCPF(F.Ano, F.Mes, cpf) == null )
                                 {
-                                    Console.WriteLine("Numero de horas:");
-                                    F.Numero_horas = int.Parse(Console.ReadLine());
-                                    Console.WriteLine("Valor da hora:");
-                                    F.Valor = int.Parse(Console.ReadLine());
+                                    F.Numero_horas = TrataNumeroInteiro("Numero de horas");
+                                    F.Valor = TrataNumeroDouble("Valor da hora");
                                     F.funcionario = funcionario;
                                     ListaDePagamentos.AddPagamento(F);
                                 }
@@ -93,10 +85,8 @@ namespace FolhaDePagamento
                         string c = Console.ReadLine();
                         if(ListaFuncionarios.SearchFuncionario(c) != null)
                         {
-                            Console.WriteLine("Insira o mes:");
-                            int m = int.Parse(Console.ReadLine());
-                            Console.WriteLine("Insira o ano:");
-                            int a = int.Parse(Console.ReadLine());
+                            int m = TrataNumeroInteiro("Insira o mes");
+                            int a = TrataNumeroInteiro("Insira o ano");
                             Pagamento p = ListaDePagamentos.SearchPagamento(a, m);
                             if (p != null)
                             {
@@ -120,23 +110,21 @@ namespace FolhaDePagamento
                     case 4:
                         double total = 0.0;
                         Console.Clear();
-                        Console.WriteLine("Insira o mes:");
-                        int mes = int.Parse(Console.ReadLine());
-                        Console.WriteLine("Insira o ano:");
-                        int ano = int.Parse(Console.ReadLine());
-                        foreach(Pagamento p in ListaDePagamentos.GetPagamento())
+                        int mes = TrataNumeroInteiro("Insira o mes");
+                        int ano = TrataNumeroInteiro("Insira o ano");
+                        foreach (Pagamento p in ListaDePagamentos.GetPagamento())
                         {
                             if(p.Ano.Equals(ano) && p.Mes.Equals(mes))
                             {
                                 Console.WriteLine("Nome: " + p.funcionario.Nome);
-                                total += p.GetSalarioLiquido();
                                 Console.WriteLine("Salario liquido: " + p.GetSalarioLiquido());
+                                total += p.GetSalarioLiquido();
                             }
                         }
                         Console.WriteLine("Total: " + total);
                         break;
                     case 5:
-
+                        Console.WriteLine("Saindo do programa\nAte mais!");
                         break;
                     default:
                         Console.WriteLine("Numero incorreto\nInsira outro!!");
@@ -147,6 +135,57 @@ namespace FolhaDePagamento
                 Console.Clear();
 
             } while (op != 5);
+        }
+        static int TrataNumeroInteiro(string s)
+        {
+            int n = 0;
+            try
+            {
+                Console.WriteLine(s + ":");
+                n = int.Parse(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Deve-se inserir um " + s +"!!");
+                while (n.Equals(0))
+                {
+                    n = TrataNumeroInteiro(s);
+                }
+            }
+            return n;
+        }
+        static double TrataNumeroDouble(string s)
+        {
+            double n = 0.0;
+            try
+            {
+                Console.WriteLine(s + ":");
+                n = double.Parse(Console.ReadLine());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Deve-se inserir um " + s +"!!");
+                while (n.Equals(0))
+                {
+                    n = TrataNumeroDouble(s);
+                }
+            }
+            return n;
+        }
+        static string TrataString(string s)
+        {
+            string n = "";
+            Console.WriteLine(s + ":");
+            n = Console.ReadLine();
+            if (n.Equals(""))
+            {
+                Console.WriteLine("Deve-se inserir um " + s +"!!");
+                while (n.Equals(""))
+                {
+                    n = TrataString(s);
+                }
+            }
+            return n;
         }
     }
 }
